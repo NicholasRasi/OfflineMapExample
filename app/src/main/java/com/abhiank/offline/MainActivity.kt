@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Mapbox.getInstance(this, null)
+        Mapbox.getInstance(this)
         setContentView(R.layout.activity_main)
 
         mapView.onCreate(savedInstanceState)
@@ -39,10 +39,11 @@ class MainActivity : AppCompatActivity() {
             //Getting reference to mbtiles file in assets
             val mbtilesFile = getFileFromAssets(this, "india_coimbatore.mbtiles")
             val bounds = getLatLngBounds(mbtilesFile)
+            val uriFile = Uri.fromFile(mbtilesFile).toString().replace("file:///", "/")
 
             //Replacing placeholder with uri of the mbtiles file
             val newFileStr = styleFile.inputStream().readToString()
-                .replace("___FILE_URI___", "mbtiles://${Uri.fromFile(mbtilesFile)}")
+                .replace("___FILE_URI___", "mbtiles://${uriFile}")
 
             //Writing new content to file
             val gpxWriter = FileWriter(styleFile)
